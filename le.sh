@@ -48,6 +48,8 @@ WEBDIR="${WEBDIR:-"/var/www/.well-known/acme-challenge"}"
 CERTTYPE="${CERTTYPE:-"rsa"}"
 #CERTTYPE="ecdsa"
 
+KEYSIZE=${KEYSIZE:-4096}
+
 # The Lets Encrypt certificate authority URL
 CA="${CA:-"https://acme-staging.api.letsencrypt.org"}" # testing server, high rate limits. "Fake LE Intermediate X1"
 #CA="https://acme-v01.api.letsencrypt.org"      # official server, rate limited to 5 certs per 7 days
@@ -322,7 +324,7 @@ printf "\nInitialize the environment\n\n"
 
 # Generate a new account key
   printf " + Generate new private account key\n"
-  openssl genrsa -out "${BASEDIR}/private_account_key.pem" "4096" 2> /dev/null > /dev/null
+  openssl genrsa -out "${BASEDIR}/private_account_key.pem" $KEYSIZE 2> /dev/null > /dev/null
 
 # Calculate the thumbprint to be registered with the ACME server
   printf " + Calculate key thumbprint for ACME challenge\n"
