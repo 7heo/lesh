@@ -52,7 +52,8 @@ KEYSIZE=${KEYSIZE:-4096}
 
 # The Lets Encrypt certificate authority URL
 CA="${CA:-"https://acme-staging.api.letsencrypt.org"}" # testing server, high rate limits. "Fake LE Intermediate X1"
-#CA="https://acme-v01.api.letsencrypt.org"      # official server, rate limited to 5 certs per 7 days
+# TODO: Check/Adapt the script for the v2 api.
+#CA="https://acme-v02.api.letsencrypt.org"      # official server, rate limited to 5 certs per 7 days
 
 # Set to -v for debug or whatever you like.
 EXTRA_CURL_FLAGS="${EXTRA_CURL_FLAGS:-""}"
@@ -61,7 +62,7 @@ EXTRA_CURL_FLAGS="${EXTRA_CURL_FLAGS:-""}"
 
 
 # The license file the script will automatically accept for you
-LICENSE="https://letsencrypt.org/documents/LE-SA-v1.1.1-August-1-2016.pdf"
+LICENSE="https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf"
 
 # The local name of Lets Encrypt public certificate
 ROOTCERT="lets-encrypt-x3-cross-signed.pem.txt"
