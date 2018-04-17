@@ -48,6 +48,8 @@ WEBDIR="${WEBDIR:-"/var/www/.well-known/acme-challenge"}"
 CERTTYPE="${CERTTYPE:-"rsa"}"
 #CERTTYPE="ecdsa"
 
+CERTSIZE=${CERTSIZE:-2048}
+
 KEYSIZE=${KEYSIZE:-4096}
 
 # The Lets Encrypt certificate authority URL
@@ -172,7 +174,7 @@ sign_domain() {
      printf " $i"
      case "$CERTTYPE" in
       "rsa" )
-        openssl genrsa -out "$BASEDIR/$domain/$domain-privatekey.pem" 2048 2> /dev/null > /dev/null ;;
+        openssl genrsa -out "$BASEDIR/$domain/$domain-privatekey.pem" $CERTSIZE 2> /dev/null > /dev/null ;;
       "ecdsa" )
         openssl ecparam -genkey -name prime256v1 -out "$BASEDIR/$domain/$domain-privatekey.pem" 2> /dev/null > /dev/null ;;
      esac
