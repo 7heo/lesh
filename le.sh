@@ -54,6 +54,9 @@ KEYSIZE=${KEYSIZE:-4096}
 CA="${CA:-"https://acme-staging.api.letsencrypt.org"}" # testing server, high rate limits. "Fake LE Intermediate X1"
 #CA="https://acme-v01.api.letsencrypt.org"      # official server, rate limited to 5 certs per 7 days
 
+# Set to -v for debug or whatever you like.
+EXTRA_CURL_FLAGS="${EXTRA_CURL_FLAGS:-""}"
+
 ################ options end ##################
 
 
@@ -94,11 +97,11 @@ _request() {
 
   case "${1}" in
      "get" )
-         statuscode="$(curl -s -w "%{http_code}" -o "${tempcont}" "${2}")" ;;
+         statuscode="$(curl ${EXTRA_CURL_FLAGS} -s -w "%{http_code}" -o "${tempcont}" "${2}")" ;;
      "head" )
-         statuscode="$(curl -s -w "%{http_code}" -o "${tempcont}" "${2}" -I)" ;;
+         statuscode="$(curl ${EXTRA_CURL_FLAGS} -s -w "%{http_code}" -o "${tempcont}" "${2}" -I)" ;;
      "post" )
-         statuscode="$(curl -s -w "%{http_code}" -o "${tempcont}" "${2}" -d "${3}")" ;;
+         statuscode="$(curl ${EXTRA_CURL_FLAGS} -s -w "%{http_code}" -o "${tempcont}" "${2}" -d "${3}")" ;;
   esac
 
   if [ "$(printf "%s" "${statuscode}" | cut -b1)" != "2" ]; then
