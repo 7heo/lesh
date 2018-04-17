@@ -120,12 +120,20 @@ _request() {
   rm -f "$tempcont"
 }
 
+sha256compat() {
+	for cmd in shasum sha256sum sha256; do
+		cmdwflags="$cmd"
+		[ "$cmd" = "shasum" ] && cmdwflags="$cmd -a 256"
+		command -v $cmd >/dev/null 2>/dev/null && eval $cmdwflags && return 0
+	done
+}
+
 thumb_print() {
   # Collect the public components from the new private key and calculate the
   # thumbprint which the ACME server will challenge
   pubExponent64="$(printf "%06x" "$(openssl rsa -in "$BASEDIR/private_account_key.pem" -noout -text | grep publicExponent | head -1 | cut -d' ' -f2)" | hex2bin | urlbase64)"
   pubMod64="$(printf '%s' "$(openssl rsa -in "$BASEDIR/private_account_key.pem" -noout -modulus | cut -d= -f2)" | hex2bin | urlbase64)"
-  thumbprint="$(printf '%s' "$(printf '%s' '{"e":"'"$pubExponent64"'","kty":"RSA","n":"'"$pubMod64"'"}' | shasum -a 256 | awk '{print $1}')" | hex2bin | urlbase64)"
+  thumbprint="$(printf '%s' "$(printf '%s' '{"e":"'"$pubExponent64"'","kty":"RSA","n":"'"$pubMod64"'"}' | sha256compat | awk '{print $1}')" | hex2bin | urlbase64)"
 }
 
 signed_request() {
